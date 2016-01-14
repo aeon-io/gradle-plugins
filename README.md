@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/aeon-io/gradle-plugins.svg?branch=master)](https://travis-ci.org/aeon-io/gradle-plugins/builds)
+![Build Status](https://travis-ci.org/aeon-io/gradle-plugins.svg?branch=master)
 
 # Gradle Plugins
 

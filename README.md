@@ -1,6 +1,6 @@
 
 ![Build Status](https://travis-ci.org/aeon-io/gradle-plugins.svg?branch=master)
-![Build Status](https://drone.io/github.com/aeon-io/gradle-plugins/status.png)]
+![Build Status](https://drone.io/github.com/aeon-io/gradle-plugins/status.png)
 
 
 # Gradle Plugins

@@ -7,10 +7,26 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.Exec
 
 /**
+ * <p>
+ *     The Docker Build Plugin adds an extension ({@code dockerBuild}) and
+ *     a series of tasks to the project.
  *
- *
+ * <p><code><pre>
+ *     plugins {
+ *         id 'io.aeon.docker-build' version '0.1'
+ *     }
+ * </pre></code>
+ * <p>
+ *     Gradle Tasks added:
+ * <ul>
+ *     <li>{@code dockerClean}</li>
+ *     <li>{@code dockerPrepare} (depends on dockerClean)</li>
+ *     <li>{@code dockerImage} (depends on dockerPrepare)</li>
+ *     <li>{@code dockerPush} (depends on dockerImage)</li>
+ * </ul>
  *
  * @author pidster
+ * @since 1.0
  *
  */
 class DockerBuildPlugin implements Plugin<Project> {
@@ -23,10 +39,6 @@ class DockerBuildPlugin implements Plugin<Project> {
         }
 
         DockerBuildPluginExtension extension = project.extensions.create("dockerBuild", DockerBuildPluginExtension, project)
-
-        if (!project.configurations.findByName('docker')) {
-            project.configurations.create('docker')
-        }
 
         Delete clean = project.tasks.create('dockerClean', Delete, {
             group = 'Docker'

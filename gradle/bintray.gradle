@@ -1,0 +1,16 @@
+apply plugin: "bintray"
+
+
+//bintray {
+//    user = project.bintrayUsername
+//    key = project.bintrayPassword
+//    publications = ['mavenJava']
+//    pkg {
+//        userOrg = 'aeon-io'
+//        repo = 'gradle-plugins'
+//        name = 'docker-build-plugin'
+//        desc = 'Provides a Docker Build task and configuration plugin'
+//        licenses = ['Apache-2.0']
+//        labels = ["publish"]
+//    }
+//}

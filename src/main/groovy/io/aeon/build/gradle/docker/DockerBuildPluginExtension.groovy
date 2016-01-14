@@ -4,7 +4,20 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 
 /**
+ * Gradle Extension configuring the Docker Build command.
+ * <p>
+ * <code><pre>
+ *     dockerBuild {
+ *         name "organisation/project:$tagVersion"
+ *         dockerFile 'src/main/docker/Dockerfile'
+ *         dependsOn someTask, myTask, anotherTask
+ *         files 'src/main/config/logback.xml', 'src/main/config/project.properties'
+ *         buildArg 'version', project.version
+ *     }
+ * </pre></code>
+ *
  * @author pidster
+ * @since 1.0
  */
 class DockerBuildPluginExtension {
 
@@ -13,15 +26,22 @@ class DockerBuildPluginExtension {
     private boolean quiet = false
 
     private String name = "${project.group}/${project.name}"
+
     private String dockerFile = 'Dockerfile'
 
     private Set<Task> dependencies = Collections.emptySet()
+
     private Set<String> files = Collections.emptySet()
 
     private File resolvedDockerfile = null
+
     private Set<File> resolvedFiles = Collections.emptySet()
+
     private Map<String, String> buildArgs = new HashMap<>()
 
+    /**
+     * @param project
+     */
     public DockerBuildPluginExtension(Project project) {
         this.project = project
     }
@@ -76,7 +96,11 @@ class DockerBuildPluginExtension {
         return Collections.unmodifiableMap(buildArgs)
     }
 
-    public void onAfterEvaluate() {
+    /**
+     * Utility method for validating values supplied by the user to the extension
+     */
+    void onAfterEvaluate() {
+
         Objects.requireNonNull(name, "'name' is required")
 
         this.resolvedDockerfile = project.file(dockerFile)

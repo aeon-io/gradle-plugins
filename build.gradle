@@ -46,8 +46,8 @@ compileJava {
 }
 
 pluginBundle {
-    website = 'http://aeon.io/'
-    vcsUrl = 'https://github.com/aeon-io/gradle-plugins'
+    website = 'https://github.com/aeon-io/gradle-plugins'
+    vcsUrl = 'git@github.com:aeon-io/gradle-plugins.git'
 
     description = 'Aeon Gradle Plugins for Docker'
 

@@ -83,13 +83,13 @@ class DockerBuildPlugin implements Plugin<Project> {
                 into dockerDir
             }
 
-            List<String> buildArgsParams = []
+            List<String> commandLineArgs = ['docker', 'build', '--quiet=' + extension.quiet, '-t', extension.tag, '.']
+
             extension.buildArgs.each { k, v ->
-                buildArgsParams.add("--build-arg=$k=$v")
+                commandLineArgs.add(2, "--build-arg=$k=$v")
             }
 
-            List<String> commandLineArgs = ['docker', 'build', '-t', extension.name, '-q', extension.quiet, '.']
-            commandLineArgs.addAll(2, buildArgsParams)
+            println "DOCKER BUILD: " + commandLineArgs.join(' ')
 
             image.with {
                 workingDir dockerDir
@@ -99,7 +99,7 @@ class DockerBuildPlugin implements Plugin<Project> {
 
             push.with {
                 workingDir dockerDir
-                commandLine 'docker', 'push', extension.name
+                commandLine 'docker', 'push', extension.tag
             }
         }
     }

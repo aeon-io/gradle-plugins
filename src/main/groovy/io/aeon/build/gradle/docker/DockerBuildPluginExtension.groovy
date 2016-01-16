@@ -8,7 +8,7 @@ import org.gradle.api.Task
  * <p>
  * <code><pre>
  *     dockerBuild {
- *         name "organisation/project:$tagVersion"
+ *         name "${project.group}/${project.name}:${project.dockerTagVersion}"
  *         dockerFile 'src/main/docker/Dockerfile'
  *         dependsOn someTask, myTask, anotherTask
  *         files 'src/main/config/logback.xml', 'src/main/config/project.properties'
@@ -23,11 +23,15 @@ class DockerBuildPluginExtension {
 
     private final Project project
 
+    private final String tagOrg = project.properties?.group ?: System.env.USER_NAME
+
+    private final String tagVersion = project.properties?.dockerTagVersion ?: 'latest'
+
     private boolean quiet = false
 
-    private String name = "${project.group}/${project.name}"
+    private String tag = "${tagOrg}/${project.name}:${tagVersion}"
 
-    private String dockerFile = 'Dockerfile'
+    private String dockerFile = 'src/main/docker/Dockerfile'
 
     private Set<Task> dependencies = Collections.emptySet()
 
@@ -58,12 +62,12 @@ class DockerBuildPluginExtension {
         buildArgs.put(name.trim(), value.trim())
     }
 
-    public void setName(String name) {
-        this.name = name
+    public void setTag(String tag) {
+        this.tag = tag
     }
 
-    public String getName() {
-        return name
+    public String getTag() {
+        return tag
     }
 
     public void setDockerFile(String dockerFile) {
@@ -101,18 +105,18 @@ class DockerBuildPluginExtension {
      */
     void onAfterEvaluate() {
 
-        Objects.requireNonNull(name, "'name' is required")
+        Objects.requireNonNull(tag, "'tag' is required")
 
         this.resolvedDockerfile = project.file(dockerFile)
         if (!resolvedDockerfile.exists()) {
-            throw new IllegalStateException("$dockerFile does not exist")
+            throw new IllegalStateException("Dockerfile '${resolvedDockerfile}' does not exist")
         }
 
         Set<File> set = new HashSet<>();
         for (String file : files) {
             def resolvedFile = project.file(file)
             if (!resolvedFile.exists()) {
-                throw new IllegalStateException("$resolvedFile does not exist")
+                throw new IllegalStateException("Specified file '${resolvedFile}' does not exist")
             }
 
             set.add(resolvedFile)

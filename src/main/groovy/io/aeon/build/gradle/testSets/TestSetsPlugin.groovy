@@ -19,7 +19,6 @@ class TestSetsPlugin implements Plugin<Project> {
         TestSetsPluginExtension extension = project.extensions.create('testSets', TestSetsPluginExtension, project)
 
         project.afterEvaluate {
-            extension.onAfterEvaluate()
 
             SourceSetContainer sourceSets = project.sourceSets
             ConfigurationContainer configurations = project.configurations

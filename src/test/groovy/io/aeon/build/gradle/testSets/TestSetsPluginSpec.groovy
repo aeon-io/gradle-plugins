@@ -181,9 +181,8 @@ class TestSetsPluginSpec extends Specification {
         when:
         BuildResult result = GradleRunner.create()
                 .withProjectDir(temporaryFolder.root)
-                .withDebug(true)
                 .withGradleVersion("2.9")
-                .withArguments("assemble", "scopedTest", "--debug", "--stacktrace")
+                .withArguments("assemble", "scopedTest", "--stacktrace")
                 .build()
 
         println result.output

@@ -34,8 +34,4 @@ class TestSetsPluginExtension {
         return testSetMap
     }
 
-    void onAfterEvaluate() {
-        project?.logger?.debug('onAfterEvaluate()')
-    }
-
 }

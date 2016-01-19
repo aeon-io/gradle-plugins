@@ -25,6 +25,7 @@ class TestSetsPlugin implements Plugin<Project> {
             ConfigurationContainer configurations = project.configurations
 
             extension.testSetMap.each { String name, Closure<?> closure ->
+
                 SourceSet sourceSet = sourceSets.create(name, {
                     resources.srcDir project.file("src/${name}/resources")
                     compileClasspath += sourceSets.main.output + configurations.testRuntime
@@ -53,32 +54,6 @@ class TestSetsPlugin implements Plugin<Project> {
                 testTask.classpath = sourceSet.runtimeClasspath
                 testTask.shouldRunAfter project.tasks.test
                 project.tasks.check.dependsOn testTask
-
-//                testTask.dependsOn.remove(project.tasks.testClasses)
-//                testTask.ignoreFailures = false
-
-//                project.tasks.scopedTestClasses.doLast {
-//                    println "classes >>> outputs.files.files: " + outputs.files.files
-//                    println "classes >>> scopedTest.files   : " + project.file("${project.buildDir}/classes/${name}").listFiles().each { File f -> f.listFiles() }.flatten()
-//
-//                    println "scopedTest.candidateClassFiles: " + testTask.candidateClassFiles
-//                    println "scopedTest.classpath          : " + testTask.classpath.files
-//                    println "scopedTest.testClassesDir     : " + testTask.testClassesDir
-//                    println "scopedTest.testSrcDirs        : " + testTask.testSrcDirs
-//                    println "scopedTest.inputs             : " + testTask.inputs.files.files
-//                    println "scopedTest.outputs            : " + testTask.outputs.files.files
-//
-//                    testTask.properties.each { k,v ->
-//                        println "scopedTest.properties.$k : " + v
-//                    }
-//                }
-
-//                project.tasks.compileScopedTestJava.doLast {
-//                    println ">>>>>>>>>>> outputs.files.files: " + outputs.files.files
-//                    println ">>> sourceSet.output.classesDir: " + sourceSet.output.classesDir
-//                    println ""
-//                }
-
             }
         }
     }

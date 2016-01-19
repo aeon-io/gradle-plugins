@@ -87,7 +87,38 @@ class TestSetsPluginSpec extends Specification {
             dependencies {
                 testCompile "junit:junit:4.12"
             }
+
+            test {
+                testLogging {
+                    showStandardStreams = true
+                }
+            }
         """
+    }
+
+    def 'build model and graph' () {
+
+        given:
+        buildFile << """
+            testSets {
+                scopedTest {
+                    testLogging {
+                        showStandardStreams = true
+                    }
+                }
+            }
+        """
+
+        when:
+        BuildResult result = GradleRunner.create()
+                .withProjectDir(temporaryFolder.root)
+                .withDebug(true)
+                .withArguments("model", "--stacktrace")
+                .build()
+
+        then:
+        println result.output
+        result.task(":model").outcome == SUCCESS
     }
 
     def 'assemble scoped test and check task graph' () {
@@ -114,6 +145,7 @@ class TestSetsPluginSpec extends Specification {
                 .build()
 
         then:
+        println result.output
         result.task(":tasks").outcome == SUCCESS
         result.output.contains('anotherScopedTestClasses - Assembles another scoped test classes. [classes]')
         result.output.contains('scopedTestClasses - Assembles scoped test classes. [classes]')
@@ -158,6 +190,7 @@ class TestSetsPluginSpec extends Specification {
 
         then:
         // result.task(":scopedTest").outcome == SUCCESS
+
         true
     }
 

@@ -32,12 +32,6 @@ class TestSetsPlugin implements Plugin<Project> {
                     runtimeClasspath += output + compileClasspath
                 })
 
-                ['java', 'groovy'].each { String lang ->
-                    if (project.pluginManager.hasPlugin(lang)) {
-                        sourceSet."$lang".srcDir project.file("src/${name}/${lang}")
-                    }
-                }
-
                 String taskName = "${name}Test".replaceAll('TestTest', 'Test')
 
                 def map = [

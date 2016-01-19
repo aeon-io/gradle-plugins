@@ -18,10 +18,11 @@ class DockerBuildPluginTest {
     @Test
     public void testPlugin() {
         Project project = ProjectBuilder.builder()
-                .withName("testName")
+                .withName('testName')
                 .build()
 
-        project.setProperty("group", "testGroup")
+        project.setProperty('group', 'testGroup')
+        project.properties.put('dockerTagVersion', 'latest')
 
         project.pluginManager.apply 'io.aeon.docker-build'
 

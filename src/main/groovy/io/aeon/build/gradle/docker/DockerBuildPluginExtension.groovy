@@ -27,21 +27,51 @@ class DockerBuildPluginExtension {
 
     private final String tagVersion = project.properties?.dockerTagVersion ?: 'latest'
 
-    private boolean quiet = false
+    private final Map<String, String> buildArgs = new HashMap<>()
 
-    private String tag = "${tagOrg}/${project.name}:${tagVersion}"
+    private final Set<Task> dependencies = new HashSet<>()
 
-    private String dockerFile = 'src/main/docker/Dockerfile'
+    private final Set<String> files = new HashSet<>()
 
-    private Set<Task> dependencies = Collections.emptySet()
+    private final Set<String> ulimitOpts = new HashSet<>()
 
-    private Set<String> files = Collections.emptySet()
+    def boolean quiet = false
+
+    def int cpuShares = 0
+
+    def String cgroupParent = ''
+
+    def int cpuPeriod = 0
+
+    def int cpuQuota = 0
+
+    def String cpuSetCpus = ''
+
+    def String cpuSetMems = ''
+
+    def boolean disableContentTrust = true
+
+    def boolean forceRemove = false
+
+    def String memory = ''
+
+    def String memorySwap = ''
+
+    def boolean noCache = false
+
+    def boolean pull = false
+
+    def boolean remove = true
+
+    def String tag = "${tagOrg}/${project.name}:${tagVersion}"
+
+    def String dockerFile = 'src/main/docker/Dockerfile'
+
+    // ------------------------------------------------------------
 
     private File resolvedDockerfile = null
 
     private Set<File> resolvedFiles = Collections.emptySet()
-
-    private Map<String, String> buildArgs = new HashMap<>()
 
     /**
      * @param project
@@ -50,24 +80,8 @@ class DockerBuildPluginExtension {
         this.project = project
     }
 
-    public boolean isQuiet() {
-        return quiet
-    }
-
-    public void setQuiet(boolean quiet) {
-        this.quiet = quiet
-    }
-
     public void buildArg(String name, String value) {
         buildArgs.put(name.trim(), value.trim())
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag
-    }
-
-    public String getTag() {
-        return tag
     }
 
     public void setDockerFile(String dockerFile) {
@@ -76,27 +90,32 @@ class DockerBuildPluginExtension {
 
     public void dependsOn(Task... args) {
         Set<Task> set = new HashSet<>(Arrays.asList(args));
-        this.dependencies = Collections.unmodifiableSet(set);
-    }
-
-    public Set<Task> getDependencies() {
-        return dependencies
+        dependencies.addAll(set)
     }
 
     public void files(String... args) {
         Set<String> set = new HashSet<>(Arrays.asList(args));
-        this.files = Collections.unmodifiableSet(set);
+        files.addAll(set)
     }
 
-    public File getResolvedDockerfile() {
+    public void ulimit(String... args) {
+        Set<String> set = new HashSet<>(Arrays.asList(args));
+        ulimitOpts.addAll(set)
+    }
+
+    Set<Task> getDependencies() {
+        return dependencies
+    }
+
+    File getResolvedDockerfile() {
         return resolvedDockerfile
     }
 
-    public Set<String> getResolvedFiles() {
+    Set<File> getResolvedFiles() {
         return resolvedFiles
     }
 
-    public Map<String, String> getBuildArgs() {
+    Map<String, String> getBuildArgs() {
         return Collections.unmodifiableMap(buildArgs)
     }
 

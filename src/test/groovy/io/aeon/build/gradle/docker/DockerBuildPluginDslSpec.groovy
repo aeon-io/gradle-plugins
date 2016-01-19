@@ -14,7 +14,6 @@ import spock.lang.Specification
  *
  * @author pidster
  */
-@Ignore
 class DockerBuildPluginDslSpec extends Specification {
 
     @Rule
@@ -55,7 +54,7 @@ class DockerBuildPluginDslSpec extends Specification {
     """
     }
 
-    def 'test plugin' () {
+    def 'test basic docker build config' () {
 
         given:
         buildFile << """
@@ -70,11 +69,11 @@ class DockerBuildPluginDslSpec extends Specification {
         when:
         def result = GradleRunner.create()
             .withProjectDir(projectDir)
-            .withArguments('dockerImage')
+            .withArguments('tasks')
             .build()
 
         then:
-        result.task(":dockerImage").outcome == SUCCESS
+        result.task(":tasks").outcome == SUCCESS
         // projectDir.file("Dockerfile").exists()
         true
 

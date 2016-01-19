@@ -89,8 +89,6 @@ class DockerBuildPlugin implements Plugin<Project> {
                 commandLineArgs.add(2, "--build-arg=$k=$v")
             }
 
-            println "DOCKER BUILD: " + commandLineArgs.join(' ')
-
             image.with {
                 workingDir dockerDir
                 commandLine commandLineArgs

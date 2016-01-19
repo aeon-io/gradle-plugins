@@ -3,4 +3,4 @@
  * @author pidster
  * @since 1.0
  */
-package io.aeon.build.gradle.integTest
+package io.aeon.build.gradle.testSets

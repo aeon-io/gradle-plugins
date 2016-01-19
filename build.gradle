@@ -80,6 +80,13 @@ jacocoTestReport {
 
 check.dependsOn jacocoTestReport
 
+test {
+    testLogging {
+//        events "passed", "skipped", "failed", "standardOut", "standardError"
+        showStandardStreams = true
+    }
+}
+
 pluginBundle {
     website = 'https://github.com/aeon-io/gradle-plugins'
     vcsUrl = 'https://github.com/aeon-io/gradle-plugins.git'
@@ -92,11 +99,11 @@ pluginBundle {
             displayName = "Aeon's Docker build plugin"
             tags = ['aeon', 'docker', 'container']
         }
-//        integTestPlugin {
-//            id = 'io.aeon.integ-test'
-//            displayName = "Aeon's integration test plugin"
-//            tags = ['aeon', 'test', 'integration']
-//        }
+        testSetPlugin {
+            id = 'io.aeon.test-sets'
+            displayName = "Aeon's test Set plugin"
+            tags = ['aeon', 'test', 'integration']
+        }
 //        optionalScopePlugin {
 //            id = 'io.aeon.optional-scope'
 //            displayName = "Aeon's optional scope plugin"
